@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <div id="wrapper">
+        <button type="button" id="ciweimao">Ciweimao</button>
+        <button type="button" id="qidian">Qidian</button>
+        <button type="button" id="bookqq">Book QQ</button>
+        <button type="button" id="clear-chapter">Clear Chapter STV</button>
+    </div>
+</body>
+<script type="text/javascript">
+    document.getElementById("ciweimao").onclick = function() {
+        location.href = "./scripts/copy_ciweimao.txt";
+    };
+    document.getElementById("qidian").onclick = function() {
+        location.href = "./scripts/copy_qidian.txt";
+    };
+    document.getElementById("bookqq").onclick = function() {
+        location.href = "./scripts/copy_bookqq.txt";
+    };
+    document.getElementById("clear-chapter").onclick = function() {
+        location.href = "./scripts/clear_chapter.txt";
+    };
+</script>
+</html>
