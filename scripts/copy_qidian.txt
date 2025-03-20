@@ -1,0 +1,40 @@
+var list_sign = ["-----", "*****", "~~~~~", "////"];
+
+var titleElement = document.querySelector("h1.title");
+var title = titleElement ? titleElement.innerText.split("\n")[0].trim() : "Unknown Title";
+
+var spanElements = document.querySelectorAll("span.content-text");
+var content = Array.from(spanElements).map(el => {
+  var chapterText = el.textContent;
+  return chapterText;
+}).join("\n");
+
+var result = `${title}\n${content}\n\n${list_sign[2]}\n`;
+
+navigator.clipboard.writeText(result).then(function() {console.log("Copied to clipboard");}).catch(function(err){console.error("Failed to copy:", err);});
+
+var button = document.createElement('button');
+button.textContent = 'Tải file txt';
+button.style.position = 'fixed';
+button.style.top = '10px';
+button.style.right = '10px';
+button.style.padding = '10px';
+button.style.backgroundColor = '#4CAF50';
+button.style.color = 'white';
+button.style.border = 'none';
+button.style.borderRadius = '5px';
+button.style.cursor = 'pointer';
+document.body.appendChild(button);
+
+button.addEventListener('click', function () {
+    var result = window.result;
+    if (result) {
+        var blob = new Blob([result], { type: 'text/plain' });
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${title}.txt`;
+        link.click();
+    } else {
+        alert('Không tìm thấy dữ liệu trong biến result!');
+    }
+});

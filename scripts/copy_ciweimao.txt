@@ -1,0 +1,21 @@
+const list_sign = ["-----", "*****", "~~~~~", "////"];
+
+const titleElement = document.querySelector("#J_BookCnt > div.read-hd > h1.chapter");
+const title = titleElement ? titleElement.textContent : "Unknown Title";
+
+const pElements = document.querySelectorAll("p.chapter");
+const content = Array.from(pElements).map(el => {
+  let chapterText = el.textContent.replace(/uYj8o\d*$/, "");
+  const imgElement = el.querySelector("img");
+  if (imgElement) {
+    const imgSrc = imgElement.getAttribute("src");
+    if (imgSrc) {
+      chapterText += `\n${imgSrc}\n`;
+    }
+  }
+  return chapterText;
+}).join("\n");
+
+const result = `${title}\n${content}\n\n${list_sign[2]}\n`;
+
+navigator.clipboard.writeText(result).then(()=> console.log("Copied to clipboard")).catch(err => console.error("Failed to copy:", err));
