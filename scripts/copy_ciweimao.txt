@@ -5,7 +5,7 @@ const title = titleElement ? titleElement.textContent : "Unknown Title";
 
 const pElements = document.querySelectorAll("p.chapter");
 const content = Array.from(pElements).map(el => {
-  let chapterText = el.textContent.replace(/uYj8o\d*$/, "").replace(/uYj4W$/, "");
+  let chapterText = el.textContent.replace(/uYj8o\d*$/, "").replace(/uYj4W\d*$/, "");
   const imgElement = el.querySelector("img");
   if (imgElement) {
     const imgSrc = imgElement.getAttribute("src");
