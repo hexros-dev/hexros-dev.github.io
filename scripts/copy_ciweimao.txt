@@ -1,5 +1,10 @@
 const list_sign = ["-----", "*****", "~~~~~", "////"];
 
+const dotElements = document.querySelectorAll(".J_Num.num");
+dotElements.forEach((el) => {
+  el.remove();
+});
+
 const titleElement = document.querySelector("#J_BookCnt > div.read-hd > h1.chapter");
 const title = titleElement ? titleElement.textContent : "Unknown Title";
 
