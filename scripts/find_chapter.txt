@@ -1,10 +1,12 @@
-let list_name = ["pokemon", "harry potter"];
+window.list_name = window.list_name || ["pokemon", "harry potter"];
 
-// Khởi tạo đối tượng đếm cho mỗi tên
-let countByName = {};
-list_name.forEach(name => { countByName[name] = 0; });
+window.add_filter = function (filter) {
+  window.list_name = [...window.list_name, filter];
+}
 
-function find_chapters() {
+window.find_chapters = function () {
+  let list_chapters = {};
+  window.list_name.forEach(name => { list_chapters[name] = [] });
   let expand_button = document.querySelector("#clicktoexp");
   let expand_text = expand_button.textContent.trim();
   if (expand_text === "Mở rộng" || expand_text === "Expand" || expand_text === "展开" || expand_text === "وسيع"){
@@ -15,20 +17,19 @@ function find_chapters() {
   for (let chapter of chapters) {
     let title = chapter.title.replace(/&nbsp;/g, " ").replace(/\u00A0/g, ' ');
     
-    // Kiểm tra từng tên trong list_name
-    for (let name of list_name) {
+    for (let name of window.list_name) {
       if (title.toLowerCase().includes(name.toLowerCase())) {
-        // Tăng số thứ tự tương ứng với tên được tìm thấy
-        countByName[name]++;
-        console.log(`>>> ${name}#${countByName[name]}: ${title}`);
-        // Nếu chỉ muốn in ra một lần mỗi chapter thì thoát khỏi vòng lặp sau khi tìm thấy tên phù hợp
+        list_chapters[name].push(title);
         break;
       }
     }
   }
   
-  let current_chapters = chapters.length;
-  document.querySelector("#noofchapter").innerText = current_chapters;
+  for (let name of window.list_name) {
+      console.log(`>>> ${name} <<<`);
+    for (let idx = 1; idx <= list_chapters[name].length; idx++){
+      console.log(`#${idx}:::${list_chapters[name][idx - 1]}`);
+    }
+  }
+  
 }
-
-find_chapters();
