@@ -1,24 +1,22 @@
-﻿let list_name = ["đấu la", "đấu phá", "genshin", "honkai", "fgo", "tây du",
-	"tiên hiệp", "long tộc", "azur lane", "sụp đổ", "nguyên thần",
-	"fate", "wuthering waves", "na tra", "cực phẩm gia đinh"];
+window.list_name = ["đấu la", "đấu phá", "genshin", "honkai", "fgo", "tây du",
+  "tiên hiệp", "long tộc", "azur lane", "sụp đổ", "nguyên thần",
+  "fate", "wuthering waves", "na tra", "cực phẩm gia đinh"];
 
-function remove_chapter() {
-	let expand_button = document.querySelector("#clicktoexp");
-	let expand_text = expand_button.textContent.trim();
-	if (expand_text === "Mở rộng" || expand_text === "Expand" || expand_text === "展开" || expand_text === "وسيع"){
-		expand_button.click();
-	}
-	let chapters = document.querySelectorAll("#chaptercontainerinner a.listchapitem");
-	for (let chapter of chapters) {
-		let title = chapter.title.replace(/&nbsp;/g, " ").replace(/\u00A0/g, ' ');
-    	const found = list_name.some(name => title.toLowerCase().includes(name.toLowerCase()));
-    	if (!found) continue;
-   		let parentDiv = chapter.closest(".col-md-4");
-    	if (!parentDiv) continue;
-    	parentDiv.remove();
-  	}
-	let current_chapters = document.querySelectorAll("#chaptercontainerinner a.listchapitem").length;
-	document.querySelector("#noofchapter").innerText = current_chapters;
+window.remove_chapters = function () {
+  let expand_button = document.querySelector("#clicktoexp");
+  let expand_text = expand_button.textContent.trim();
+  if (expand_text === "Mở rộng" || expand_text === "Expand" || expand_text === "展开" || expand_text === "وسيع"){
+    expand_button.click();
+  }
+  let chapters = document.querySelectorAll("#chaptercontainerinner a.listchapitem");
+  for (let chapter of chapters) {
+    let title = chapter.title.replace(/&nbsp;/g, " ").replace(/\u00A0/g, ' ');
+      const found = window.list_name.some(name => title.toLowerCase().includes(name.toLowerCase()));
+      if (!found) continue;
+      let parentDiv = chapter.closest(".col-md-4");
+      if (!parentDiv) continue;
+      parentDiv.remove();
+    }
+  let current_chapters = document.querySelectorAll("#chaptercontainerinner a.listchapitem").length;
+  document.querySelector("#noofchapter").innerText = current_chapters;
 }
-
-remove_chapter()
