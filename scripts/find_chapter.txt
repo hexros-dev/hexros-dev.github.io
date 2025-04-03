@@ -79,3 +79,11 @@ window.renew = async function () {
 expand();
 renew();
 console.clear();
+window.filters = prompt('Enter a list of filters, each separated by commas. Leave blank if using the default filters "pokemon" and "harry potter".')
+if (filters !== '') {
+	window.list_name = [];
+	let flrs = window.filters.split(",");
+	flrs.forEach(f => {
+		window.list_name.push(f.trim());
+	});
+} 
