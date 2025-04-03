@@ -35,6 +35,7 @@ window.find_chapters = function () {
 					title: title,
 					uri: chapter.uri,
 				});
+				break;
 			}
 		}
 	}
