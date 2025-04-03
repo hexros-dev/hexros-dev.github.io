@@ -1,35 +1,80 @@
-window.list_name = window.list_name || ["pokemon", "harry potter"];
+window.source = window.bookinfo['host'];
+window.bookid = window.bookinfo['id'];
+window.list_name = window.list_name || ['pokemon', 'harry potter'];
+window.bookchapters = [];
+window.baseurl = 'https://sangtacviet.vip';
 
 window.add_filter = function (filter) {
-  window.list_name = [...window.list_name, filter];
+	window.list_name = [...window.list_name, filter];
+};
+
+window.expand = function () {
+	let expand_button = document.querySelector('#clicktoexp');
+	let expand_text = expand_button.textContent.trim();
+	if (expand_text === 'Mở rộng' || expand_text === 'Expand' || expand_text === '展开' || expand_text === 'وسيع') {
+		expand_button.click();
+	}
+};
+
+window.sleep = function (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 window.find_chapters = function () {
-  let list_chapters = {};
-  window.list_name.forEach(name => { list_chapters[name] = [] });
-  let expand_button = document.querySelector("#clicktoexp");
-  let expand_text = expand_button.textContent.trim();
-  if (expand_text === "Mở rộng" || expand_text === "Expand" || expand_text === "展开" || expand_text === "وسيع"){
-    expand_button.click();
-  }
-  
-  let chapters = document.querySelectorAll("#chaptercontainerinner a.listchapitem");
-  for (let chapter of chapters) {
-    let title = chapter.title.replace(/&nbsp;/g, " ").replace(/\u00A0/g, ' ');
-    
-    for (let name of window.list_name) {
-      if (title.toLowerCase().includes(name.toLowerCase())) {
-        list_chapters[name].push(title);
-        break;
-      }
-    }
-  }
-  
-  for (let name of window.list_name) {
-      console.log(`>>> ${name} <<<`);
-    for (let idx = 1; idx <= list_chapters[name].length; idx++){
-      console.log(`#${idx}:::${list_chapters[name][idx - 1]}`);
-    }
-  }
-  
-}
+	let list_chapters = {};
+	window.list_name.forEach((name) => {
+		list_chapters[name] = [];
+	});
+
+	for (let chapter of window.bookchapters) {
+		let title = chapter.title.replace(/&nbsp;/g, ' ').replace(/\u00A0/g, ' ');
+
+		for (let name of window.list_name) {
+			if (title.toLowerCase().includes(name.toLowerCase())) {
+				list_chapters[name].push({
+					title: title,
+					uri: chapter.uri,
+				});
+			}
+		}
+	}
+
+	for (let name of window.list_name) {
+		console.log(`>>> ${name} <<<`);
+		for (let idx = 1; idx <= list_chapters[name].length; idx++) {
+			console.log(`#${idx}:::${list_chapters[name][idx - 1]['title']} | ${window.baseurl}${list_chapters[name][idx - 1]['uri']}`);
+		}
+	}
+};
+
+window.renew = async function () {
+	var url = `/index.php?ngmar=chapterlist&h=${window.source}&bookid=${window.bookid}&sajax=getchapterlist`;
+	var chapterfetcher = new XMLHttpRequest();
+	chapterfetcher.open('GET', url, true);
+	chapterfetcher.onreadystatechange = function () {
+		if (chapterfetcher.readyState == 4 && chapterfetcher.status == 200) {
+			if (chapterfetcher.responseText == '') {
+				g('chaptercontainerinner').innerHTML = '<center>Không có nội dung!!</center>';
+				return;
+			}
+			window.x = JSON.parse(chapterfetcher.responseText);
+		}
+	};
+	chapterfetcher.send();
+	await sleep(1000);
+	window.cachechapter = window.x.data.split('-//-');
+	var i = 0;
+	var iend = window.cachechapter.length;
+	for (; i != iend; ) {
+		var da = window.cachechapter[i].split('-/-');
+		window.bookchapters.push({
+			uri: `/truyen/${window.source}/` + da[0] + `/${window.bookid}/` + da[1] + '/',
+			title: da[2],
+		});
+		i++;
+	}
+};
+
+expand();
+renew();
+console.clear();
