@@ -1,0 +1,29 @@
+const dotElements = document.querySelectorAll(".J_Num.num");
+dotElements.forEach((el) => {
+  el.remove();
+});
+
+const spanElements = document.querySelectorAll("p.chapter > span");
+spanElements.forEach((el) => {
+    el.remove();
+});
+
+const titleElement = document.querySelector("#J_BookCnt > div.read-hd > h1.chapter");
+const title = titleElement ? titleElement.textContent : "Unknown Title";
+
+const pElements = document.querySelectorAll("p.chapter");
+const content = Array.from(pElements).map(el => {
+  let chapterText = el.textContent;
+  const imgElement = el.querySelector("img");
+  if (imgElement) {
+    const imgSrc = imgElement.getAttribute("src");
+    if (imgSrc) {
+      chapterText += `\n${imgSrc}\n`;
+    }
+  }
+  return chapterText;
+}).join("\n");
+
+const result = `${title}\n${content}\n`;
+
+navigator.clipboard.writeText(result).then(()=> console.log("Copied to clipboard")).catch(err => console.error("Failed to copy:", err));
